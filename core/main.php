@@ -1,10 +1,4 @@
-<!--
-Author: Ksharp
-Author Mail : ahmed.khiari@esprit.tn
-Author URL: 
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
--->
+
 <?php
 require_once '../config/config.php';
 require_once 'save_to_csv_file.php';

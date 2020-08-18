@@ -1,10 +1,4 @@
-<!--
-Author: Ksharp
-Author Mail : ahmed.khiari@esprit.tn
-Author URL: 
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
--->
+
 <?php
 function Search_For_User($User_id, $link_to_sncft)
 {
