@@ -1,10 +1,3 @@
-<!--
-Author: Ksharp
-Author Mail : ahmed.khiari@esprit.tn
-Author URL: 
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
--->
 
 <?php
 require_once '../core/main.php';
@@ -12,7 +5,6 @@ require_once '../config/config.php';
 ?>
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
