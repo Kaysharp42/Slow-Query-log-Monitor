@@ -1,4 +1,3 @@
-
 <?php
 function csv_from_mysql_Login_History($result, $filename)
 {

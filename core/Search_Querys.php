@@ -1,4 +1,3 @@
-
 <?php
 function Search_For_User($User_id, $link_to_sncft)
 {
