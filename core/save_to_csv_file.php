@@ -21,16 +21,40 @@ function csv_from_mysql_Login_History($result, $filename)
     }
     exit();
 }
-function csv_from_mysql_new_recu_status($filename, $result, $count, $link_to_sncft)
+function csv_from_mysql_General_Log($filename, $result, $link)
 {
     header("Content-Type: application/vnd.ms-excel");
     header("Content-Disposition: attachment; filename=\"$filename\"");
     $isPrintHeader = false;
-    $IsprintedStatus = false;
+    foreach ($result as $row) {
+
+        if (!$isPrintHeader) {
+            echo implode(',', array_keys($row)) . "\n";
+
+            $isPrintHeader = true;
+        }
+        foreach ($row as &$value) {
+            $value = str_replace("\r\n", "", $value);
+            $value = "\"" . $value . "\"";
+
+        }
+        echo implode(',', array_values($row)) . "\n";
+    }
+    exit();
+
+}
+
+function csv_from_mysql_new_recu_status($filename, $result, $link, $link_to_sncft)
+{
+    header("Content-Type: application/vnd.ms-excel");
+    header("Content-Disposition: attachment; filename=\"$filename\"");
+    $isPrintHeader = false;
+    $General_Log_Column_name=array(utf8_decode("heure de l'évènement") ,"IP");
     $title=array("Status");
 
-    while ($row = mysqli_fetch_array($result)) {
-        $str = $row['argument'];
+    while ($Log_row = mysqli_fetch_array($result)) {
+        $str = $Log_row['argument'];
+
         $substring = substr($str, 61);
         $Fresult = Search_For_Recu_new_status($substring, $link_to_sncft);
         $DesResult = Search_For_Recu($substring, $link_to_sncft);
@@ -38,21 +62,33 @@ function csv_from_mysql_new_recu_status($filename, $result, $count, $link_to_snc
         $recu_status_id = $DesResult_data['id_recu_status'];
         $recu_status_result = Search_For_Recu_status($recu_status_id, $link_to_sncft);
         $recu_status_data = mysqli_fetch_array($recu_status_result);
+     
         foreach ($Fresult as $row) {
 
             if (!$isPrintHeader) {
+                echo implode(',', $General_Log_Column_name) . ",";
                 echo implode(',', array_keys($row)) . ",";
                 echo implode(',', $title) . "\n";
 
                 $isPrintHeader = true;
             }
-
+           
+            $output = array();
+            $output = array_slice($recu_status_data, 0, 1);
+           $event_time_and_ip_Output=array();
+            $event_time_and_ip_Output= array_slice($Log_row,1,2) ;
             foreach ($row as &$value) {
                 $value = str_replace("\r\n", "", $value);
                 $value = "\"" . $value . "\"";
+
             }
-            $output = array();
-            $output = array_slice($recu_status_data, 0, 1);
+          foreach($event_time_and_ip_Output as &$value)
+          {
+
+            $value = str_replace("root[root] @ localhost", "", $value);
+
+          }
+            echo implode(',', array_values($event_time_and_ip_Output)) . ',';
             echo implode(',', array_values($row)) . ',';
             echo implode(',', array_values($output)) . "\n";
         }

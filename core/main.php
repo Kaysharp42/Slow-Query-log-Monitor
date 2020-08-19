@@ -41,7 +41,7 @@ function string_between_two_string($str, $starting_word, $ending_word)
     return substr($str, $subtring_start, $size);
 }
 if (isset($_POST['Search'])) {
-    if (!empty($_POST['Fromdate']) && !empty($_POST['todate']) && !empty($_POST['Where_Argument'])) {
+    if (!empty($_POST['Fromdate']) && !empty($_POST['todate'])) {
         Set_Sessions_Variables($_POST['Fromdate'], $_POST['todate']);
         Set_Sessions_Where_Variable($_POST['Where_Argument']);
         $from = Get_Sessions_From_Variable();
@@ -65,7 +65,7 @@ if (isset($_POST['Search'])) {
                 } else echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
                 break;
         }
-    } else if (empty($_POST['Fromdate']) && empty($_POST['todate']) && !empty($_POST['Where_Argument'])) {
+    } else if (empty($_POST['Fromdate']) && empty($_POST['todate']) ) {
         Set_Sessions_Where_Variable($_POST['Where_Argument']);
         $from = Get_Sessions_From_Variable();
         $to = Get_Sessions_To_Variable();
@@ -82,6 +82,7 @@ if (isset($_POST['Search'])) {
             default:
                 $sql = "SELECT * FROM slow_log WHERE start_time  BETWEEN '$from' AND '$to'
 				AND  sql_text like '$where%'
+                AND  db='sncft_db_recu_espece'
 			  ORDER BY `start_time` DESC ";
                 if ($result = mysqli_query($link, $sql)) {
                     $count = mysqli_num_rows($result);
@@ -99,13 +100,14 @@ if (isset($_POST['save'])) {
     $to = Get_Sessions_To_Variable();
     $where = Get_Sessions_Where_Variable();
     switch ($where) {
+
         case "SELECT * FROM user":
             $sql = "SELECT * FROM general_log WHERE event_time  BETWEEN '$from' AND '$to'
     AND  argument like 'SELECT * FROM user WHERE username%'
   ORDER BY `event_time` DESC ";
             if ($result = mysqli_query($link, $sql)) {
                 $count = mysqli_num_rows($result);
-                $timestamp = time();
+                $timestamp = "De_" . $from . utf8_decode("_à_") . $to."_Historyque_des_connection";
                 $filename = 'Export_log_' . $timestamp . '.csv';
                 csv_from_mysql_Login_History($result, $filename);
             } else echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
@@ -118,7 +120,7 @@ if (isset($_POST['save'])) {
 
             if ($result = mysqli_query($link, $sql)) {
                 $count = mysqli_num_rows($result);
-                $timestamp = time();
+                $timestamp = "De_" . $from . utf8_decode("_à_") . $to."_nouveaux_utilisateurs";
                 $filename = 'Export_log_' . $timestamp . '.csv';
                 csv_from_mysql_new_ures($filename, $result, $count, $link_to_sncft);
             } else echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
@@ -131,21 +133,33 @@ if (isset($_POST['save'])) {
 
             if ($result = mysqli_query($link, $sql)) {
                 $count = mysqli_num_rows($result);
-                $timestamp = time();
+                $timestamp = "De_" . $from . utf8_decode("_à_") . $to."_nouveaux_recu";
                 $filename = 'Export_log_' . $timestamp . '.csv';
                 csv_from_mysql_new_recu($filename, $result, $count, $link_to_sncft);
             } else echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
             break;
         case   "UPDATE `recu` SET `id_recu_status` =":
-            $sql = "SELECT * FROM general_log WHERE event_time  BETWEEN '$from' AND '$to'
+            $sql = "SELECT * FROM general_log WHERE event_time  >= '$from' AND event_time <='$to'
                     AND  argument like '$where%'
                   ORDER BY `event_time` DESC ";
 
             if ($result = mysqli_query($link, $sql)) {
                 $count = mysqli_num_rows($result);
-                $timestamp = time();
+                $timestamp = "De_" . $from . utf8_decode("_à_") . $to."_l'etat des recu";
                 $filename = 'Export_log_' . $timestamp . '.csv';
-                csv_from_mysql_new_recu_status($filename, $result, $count, $link_to_sncft);
+                csv_from_mysql_new_recu_status($filename, $result, $link, $link_to_sncft);
+            } else echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+            break;
+        case "":
+            $sql = "SELECT * FROM slow_log WHERE start_time  BETWEEN '$from' AND '$to'
+            AND  sql_text like '$where%'
+            AND  db='sncft_db_recu_espece'
+          ORDER BY `start_time` DESC ";
+            if ($result = mysqli_query($link, $sql)) {
+                $count = mysqli_num_rows($result);
+                $timestamp = "De_" . $from . utf8_decode("_à_") . $to;
+                $filename = 'Export_log_' . $timestamp . '.csv';
+                csv_from_mysql_General_Log($filename, $result, $link);
             } else echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
             break;
     }
