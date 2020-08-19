@@ -14,7 +14,7 @@ function csv_from_mysql_Login_History($result, $filename)
         foreach ($row as &$value) {
             $value = str_replace("\r\n", "", $value);
             $value = "\"" . $value . "\"";
-            $value = str_replace("SELECT * FROM user WHERE", utf8_encode("Quelqu'un s'est connecté avec ces informations : "), $value);
+            $value = str_replace("SELECT * FROM user WHERE", utf8_encode("Nouvelle connexion détectée : "), $value);
         }
 
         echo implode(',', array_values($row)) . "\n";
