@@ -81,7 +81,7 @@ require_once '../config/config.php';
                                                     echo "<td>" . substr($row['start_time'], 0, 19) . "</td>";
                                                     echo "<td>" . substr($row['user_host'], 22, 50) . "</td>";
                                                     echo "<td>" . $row['db'] . "</td>";
-                                                    echo utf8_encode("<td> Nouvelle connexion détectée : " . substr($row['sql_text'], 25) . "</td>");
+                                                    echo utf8_decode("<td> Nouvelle connexion detectee : ") . substr($row['sql_text'], 25) . "</td>";
                                                     echo "</tr>";
                                                 }
                                             }
