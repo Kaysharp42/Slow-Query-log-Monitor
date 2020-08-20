@@ -81,7 +81,7 @@ require_once '../config/config.php';
                                                     echo "<td>" . substr($row['start_time'], 0, 19) . "</td>";
                                                     echo "<td>" . substr($row['user_host'], 22, 50) . "</td>";
                                                     echo "<td>" . $row['db'] . "</td>";
-                                                    echo utf8_decode("<td> Nouvelle connexion détectée : " . substr($row['sql_text'], 25) . "</td>");
+                                                    echo utf8_encode("<td> Nouvelle connexion détectée : " . substr($row['sql_text'], 25) . "</td>");
                                                     echo "</tr>";
                                                 }
                                             }
@@ -100,7 +100,7 @@ require_once '../config/config.php';
                                                     $substring = preg_replace("/[^a-zA-Z0-9]/", "", $substring);
                                                     $Fresult = Search_For_User($substring, $link_to_sncft);
                                                     $User_data = mysqli_fetch_array($Fresult);
-                                                    echo  utf8_decode("<td> Nouvel utilisateur  Nom : " . $User_data['first_name'] . " | Prenom : " . $User_data['last_name'] . " | Matricule: " . $User_data['matricule'] . "</td>");
+                                                    echo  utf8_encode("<td> Nouvel utilisateur  Nom : " . $User_data['first_name'] . " | Prenom : " . $User_data['last_name'] . " | Matricule: " . $User_data['matricule'] . "</td>");
                                                     echo "</tr>";
                                                 }
                                             }
@@ -119,7 +119,7 @@ require_once '../config/config.php';
                                                     $substring = preg_replace("/[^a-zA-Z0-9]/", "", $substring);
                                                     $Fresult = Search_For_Recu($substring, $link_to_sncft);
                                                     $recu_data = mysqli_fetch_array($Fresult);
-                                                    echo utf8_decode("<td> reference :  " . $recu_data['reference'] . " | sum : " . $recu_data['sum'] . " | Matricule : " . $recu_data['matricule'] . " | Nom : " . $recu_data['first_name'] . " | Prenom : " . $recu_data['last_name'] . " | CIN : " . $recu_data['cin'] . " | motif : " . $recu_data['motif'] . " | date_signature : " . $recu_data['date_signature'] . "</td>");
+                                                    echo utf8_encode("<td> reference :  " . $recu_data['reference'] . " | sum : " . $recu_data['sum'] . " | Matricule : " . $recu_data['matricule'] . " | Nom : " . $recu_data['first_name'] . " | Prenom : " . $recu_data['last_name'] . " | CIN : " . $recu_data['cin'] . " | motif : " . $recu_data['motif'] . " | date_signature : " . $recu_data['date_signature'] . "</td>");
                                                     echo "</tr>";
                                                 }
                                             }
@@ -138,7 +138,7 @@ require_once '../config/config.php';
                                                     $recu_status_id = $recu_data['id_recu_status'];
                                                     $recu_status_result = Search_For_Recu_status($recu_status_id, $link_to_sncft);
                                                     $recu_status_data = mysqli_fetch_array($recu_status_result);
-                                                    echo utf8_decode("<td> Reference :  " . $recu_data['reference'] . " | motif : " . $recu_data['motif'] . " | Status : " . $recu_status_data['description'] . "</td>");
+                                                    echo utf8_encode("<td> Reference :  " . $recu_data['reference'] . " | motif : " . $recu_data['motif'] . " | Status : " . $recu_status_data['description'] . "</td>");
                                                     echo "</tr>";
                                                 }
                                             }
