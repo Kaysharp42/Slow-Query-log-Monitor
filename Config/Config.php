@@ -4,7 +4,7 @@
 		private $dbName = 'mysql';
 		private $user 	= 'root';
 		private $pass 	= '';
-		private $SNCFT_db_Name = 'sncft_db_recu_espece';
+		private $SNCFT_db_Name = '';
 
 		public function connecting() {
 			try {
